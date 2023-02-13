@@ -23,7 +23,7 @@
 #---------------------------------------------------------------------
 
 # *** ENTER THE TARGET NAME HERE ***
-TARGET      = climb
+TARGET      = read
 
 # important directories used by assorted rules and other variables
 DIR_DXL    = ../../../..
@@ -41,21 +41,14 @@ FORMAT      = -m64
 #---------------------------------------------------------------------
 # Core components (all of these are likely going to be needed)
 #---------------------------------------------------------------------
-INCLUDES   += -I$(DIR_DXL)/include/climbing # climbing/include/climbing/control
-# INCLUDES   += -I#/dynamixel_sdk #$(DIR_DXL)/include/climbing
-# INCLUDES   += -I$(DIR_DXL)/include/dynamixel_sdk #-I/include/climbing
-# INCLUDES   += -I$(DIR_DXL)/include/climbing
-INCLUDES   += -I /home/liz/winter_project/Sloth-bot/climbing/include/climbing
+INCLUDES   += -I$(DIR_DXL)/include/reading/dynamixel_sdk
 LIBRARIES  += -ldxl_x64_cpp
 LIBRARIES  += -lrt
-# LIBRARIES  += -climb
-# LIBRARIES  += -climbing
 
 #---------------------------------------------------------------------
 # Files
 #---------------------------------------------------------------------
-SOURCES = climb.cpp \
-		  control_dyn.cpp\
+SOURCES = read_pose.cpp \
     # *** OTHER SOURCES GO HERE ***
 
 
