@@ -14,8 +14,8 @@
 #define ADDR_TORQUE_ENABLE          64
 #define ADDR_GOAL_POSITION          116
 #define ADDR_PRESENT_POSITION       132
-#define MINIMUM_POSITION_LIMIT      0  // Refer to the Minimum Position Limit of product eManual
-#define MAXIMUM_POSITION_LIMIT      4095  // Refer to the Maximum Position Limit of product eManual
+#define MINIMUM_POSITION_LIMIT      2060  // Refer to the Minimum Position Limit of product eManual
+#define MAXIMUM_POSITION_LIMIT      2800  // Refer to the Maximum Position Limit of product eManual
 #define BAUDRATE                    57600
 #define PROTOCOL_VERSION  2.0
 
@@ -87,7 +87,7 @@ int main() {
     do {
       // use this block of code for only reading one at
       // Read the Present Position
-      dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, 4, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
+      dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, 1, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
       if (dxl_comm_result != COMM_SUCCESS) {
       printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
       }
@@ -95,11 +95,11 @@ int main() {
       printf("%s\n", packetHandler->getRxPacketError(dxl_error));
       }
 
-      printf("[ID:%03d] Present Position:%03d\n", 4, dxl_present_position);
+      printf("[ID:%03d] Present Position:%03d\n", 1, dxl_present_position);
       printf("\n\n\n\n");
       for (int j = 0; j < 1000000; j++){}
 
-      // use this block of code for reading all of them
+      // // use this block of code for reading all of them
       // for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++){
       //       // Read the Present Position
       //       dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, i, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);

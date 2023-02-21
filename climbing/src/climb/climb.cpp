@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 
+#include "control/control_dyn.h"
 #include "dynamixel_sdk/dynamixel_sdk.h"
 #include "dynamixel_sdk/port_handler.h"
 #include "dynamixel_sdk/port_handler_linux.h"
@@ -20,6 +21,7 @@
 #define MINIMUM_POSITION_LIMIT      -1000  // Refer to the Minimum Position Limit of product eManual
 #define MAXIMUM_POSITION_LIMIT      4095  // Refer to the Maximum Position Limit of product eManual
 #define BAUDRATE                    57600
+#define ADDE_PRESENT_CURRENT        126
 
 #define PROTOCOL_VERSION  2.0
 
@@ -27,12 +29,12 @@
 
 #define TORQUE_ENABLE                   1
 #define TORQUE_DISABLE                  0
-#define DXL_MOVING_STATUS_THRESHOLD     20  // DYNAMIXEL moving status threshold
+#define DXL_MOVING_STATUS_THRESHOLD     50  // DYNAMIXEL moving status threshold
 #define ESC_ASCII_VALUE                 0x1b
 
 #define NUMB_OF_DYNAMIXELS              4
 
-// initialize the amount to increment the position by
+// initialize the amount to increment the position by in degrees
 float position_increment = 1.0;
 
 // initialize a list of goal positions for each servo
@@ -46,9 +48,9 @@ std::map<char, std::vector<float>> moveBindings
   {'a', {-1}},
   {'s', {-1}},
   {'d', {1}},
-  {'i', {1}},
+  {'i', {-1}},
   {'j', {-1}},
-  {'k', {-1}},
+  {'k', {1}},
   {'l', {1}},
 };
 
@@ -135,13 +137,12 @@ int main(){
     // Get methods and members of Protocol1PacketHandler or Protocol2PacketHandler
     dynamixel::PacketHandler *packetHandler = dynamixel::PacketHandler::getPacketHandler(PROTOCOL_VERSION);
 
-    int index = 0;
     int dxl_comm_result = COMM_TX_FAIL;             // Communication result
-    int dxl_goal_position[2] = {MINIMUM_POSITION_LIMIT, MAXIMUM_POSITION_LIMIT};         // Goal position
-
     uint8_t dxl_error = 0;                          // DYNAMIXEL err
 
     int32_t dxl_present_position = 0;  // Read 4 byte Position data
+    int32_t dxl_present_current = 0;  // Read 4 byte Position data
+    int32_t last_pos = 0;
 
     // Open port
     if (portHandler->openPort()) {
@@ -181,35 +182,35 @@ int main(){
 
     // For each servo, add its current position to the servo pose 
     for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++){
-        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
+        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, i, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS) {
             printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
         }
         else if (dxl_error != 0) {
             printf("%s\n", packetHandler->getRxPacketError(dxl_error));
         }
-        printf("[ID:%03d] Present Position:%03d\n", dxl_id, dxl_present_position);
-        servo_positions[i-1] = dxl_present_position;
-    }
-
-    for (int k = 0; k < size(servo_positions); k++){
-        std::cout << servo_positions.at(k) << "\n";
+        printf("[ID:%03d] Present Position:%03f\n", i, climbing::tics2deg(dxl_present_position));
+        servo_positions[i-1] = climbing::tics2deg(dxl_present_position);
     }
 
     std::cout << "waiting for key inputs... \n";
     while(true){
         key = getch();
-
         // check if the pressed key is one of my bindings
         if (moveBindings.count(key)==1){
+            // set the last position to be the current position of the servo
+            last_pos = servo_positions.at(servoBindings[key][0]);
+            // get the id of the dynamixel being commanded
             dxl_id = servoBindings[key][0] + 1;
+            // update the servo position to be incremented by the value of the increment * the movebinding
             servo_positions.at(servoBindings[key][0]) += position_increment * moveBindings[key][0];
-            goal_pose = servo_positions.at(servoBindings[key][0]);
+            // set the goal pose to be the new value
+            goal_pose = climbing::deg2tics(servo_positions.at(servoBindings[key][0]));
             printf("servo number: %f, servo position: %f \n", servoBindings[key][0]+1.0, servo_positions.at(servoBindings[key][0]));
         }
         // check if a speed binding was pressed
         else if (speedBindings.count(key) == 1){
-            position_increment += .05 * speedBindings[key][0];
+            position_increment += .5 * speedBindings[key][0];
             printf("speed binding: %f \n", position_increment);
         }
         // do nothing if an unbound key was pressed
@@ -232,6 +233,9 @@ int main(){
         printf("%s\n", packetHandler->getRxPacketError(dxl_error));
         }
 
+        int give_up = 0;
+
+
         do {
         // Read the Present Position
         dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
@@ -242,9 +246,29 @@ int main(){
             printf("%s\n", packetHandler->getRxPacketError(dxl_error));
         }
 
-        printf("[ID:%03d] Goal Position:%03f  Present Position:%03d\n", dxl_id, goal_pose, dxl_present_position);
+        printf("[ID:%03d] Goal Position:%03f  Present Position:%03f\n", dxl_id, climbing::tics2deg(goal_pose), climbing::tics2deg(dxl_present_position));
 
-        } while((abs(goal_pose - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD));
+        // if the current present position is the same as it was last time then increment give up
+        // printf("last_pos: %d current pose: %f   " , last_pos, climbing::tics2deg(dxl_present_position));
+        if (last_pos == static_cast<int>(climbing::tics2deg(dxl_present_position))){
+            give_up++;
+        }
+        // set last pose to be the current position
+        last_pos = climbing::tics2deg(dxl_present_position);
+        }  while((abs(goal_pose - dxl_present_position) > DXL_MOVING_STATUS_THRESHOLD) & (give_up < 3));
+
+        printf("Present position of each servo:\n");
+        // For each servo print its present position
+        for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++){
+            dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, i, ADDR_PRESENT_POSITION, (uint32_t*)&dxl_present_position, &dxl_error);
+            if (dxl_comm_result != COMM_SUCCESS) {
+                printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
+            }
+            else if (dxl_error != 0) {
+                printf("%s\n", packetHandler->getRxPacketError(dxl_error));
+            }
+            printf("[ID:%03d] Present Position:%03f\n", i, climbing::tics2deg(dxl_present_position));
+        }
     }
 
     // Disable DYNAMIXEL Torque
