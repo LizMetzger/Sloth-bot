@@ -23,7 +23,7 @@
 #---------------------------------------------------------------------
 
 # *** ENTER THE TARGET NAME HERE ***
-TARGET      = auto_climb
+TARGET      = auto_climb_function
 
 # important directories used by assorted rules and other variables
 DIR_DXL    = ../../../..
@@ -48,7 +48,7 @@ LIBRARIES  += -lrt
 #---------------------------------------------------------------------
 # Files
 #---------------------------------------------------------------------
-SOURCES = auto_climb.cpp \
+SOURCES = auto_climb_function.cpp \
     # *** OTHER SOURCES GO HERE ***
 
 
