@@ -213,21 +213,27 @@ int main()
         // get the left hand loose
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(3, 217.5, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(4, 175, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 174.4, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        
         move_servos(1, 224, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 179.5, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 190, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         // slightly raise the left hand off the bar
         if (getch() == ENTER_ASCII_VALUE)
         {
         move_servos(3, 205, 217.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
+        
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(2, 190, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
 
         // press the left hand in to lock the right one
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(2, 190, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 187, 197, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
         //////// raise the left hand /////////
@@ -275,9 +281,13 @@ int main()
         {
         move_servos(3, 130, 110, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
-        // adjust the left arm to grab the bar
 
-        ///////// left the right arm //////////
+        ///////// lift the right arm //////////
+        // roll the right arm back 
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(4, 186.37, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
         // 
         //     //    set the increment positions to be the start position of the servos
         //     increment_positions = wake_up_poses;
