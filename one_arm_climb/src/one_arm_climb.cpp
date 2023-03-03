@@ -213,40 +213,35 @@ int main()
         // get the left hand loose
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(4, 174.4, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        
+        move_servos(3, 218, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 175, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(1, 224, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 190, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 180, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         // slightly raise the left hand off the bar
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(3, 205, 217.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        }
-        
-        if (getch() == ENTER_ASCII_VALUE)
-        {
-        move_servos(2, 190, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 203, 218, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
         // press the left hand in to lock the right one
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(2, 187, 197, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 196, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
         //////// raise the left hand /////////
         // lift the left arm with the right one until its clear
         if (getch() == ENTER_ASCII_VALUE)
         {
+        printf("HELLO???");
         move_servos(3, 165, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
         // pull the left arm back
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(2, 170, 194, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 170, 198, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         // rotate the left arm (partially)
 
@@ -257,7 +252,7 @@ int main()
         // roatate the body out 
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(4, 182, 177.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 182, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         // lift the left arm to the bar
         if (getch() == ENTER_ASCII_VALUE)
@@ -267,28 +262,46 @@ int main()
         // finish rotating the arm
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(1, 135, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 138, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
         //////// grab the next bar /////////
         // move the hand forward
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(2, 185, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 186, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         // move the left arm down with the right arm
         if (getch() == ENTER_ASCII_VALUE)
         {
         move_servos(3, 130, 110, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("YO??");
         }
 
         ///////// lift the right arm //////////
         // roll the right arm back 
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(4, 186.37, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 185.6, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("no???");
         }
-        // 
+        // move both shoulders down 
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(3, 138, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("fuck??");
+        }
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(1, 159.6, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("???");
+        }
+
+        // push in with right arm
+
+        // move hand up 
+
+        
         //     //    set the increment positions to be the start position of the servos
         //     increment_positions = wake_up_poses;
         //     // for each servo, if its current position is the goal (set_position) do nothing
