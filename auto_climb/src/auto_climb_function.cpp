@@ -198,35 +198,44 @@ int main()
             increment_positions = initial_positions;
             // for each servo, if its current position is the goal (set_position) do nothing
             // if the position isn't at the goal then increment itincrement_positions = set_positions;
-            move_servos(2, 185.6, increment_positions[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            move_servos(2, 186.5, increment_positions[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            printf("first go \n");
+            if (getch() == ENTER_ASCII_VALUE)
+        {
+            move_servos(4, 178.2, increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             printf("Second go \n");
-            move_servos(4, 176.2, increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
+        }
+        if (getch() == ENTER_ASCII_VALUE)
+        {
             move_servos(3, 149.5, increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
+            printf("third go \n");
+        }
+        if (getch() == ENTER_ASCII_VALUE)
+        {
             move_servos(1, set_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
-            move_servos(2, 180, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
+            printf("fourth go \n");
+        }
+        // if (getch() == ENTER_ASCII_VALUE)
+        // {
+        //     move_servos(2, 180, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        //     printf("fifth go \n");
+        // }
+        if (getch() == ENTER_ASCII_VALUE)
+        {
             move_servos(3, 143, 149.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
+            printf("sixth go \n");
+        }
+        if (getch() == ENTER_ASCII_VALUE)
+        {
             move_servos(2, 175, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Second go \n");
+            printf("seventh go \n");
+        }
             printf("ENTER PRESSED ONCE\n");
             // {184, 180, 143, 170}
         }
 
-        // press again to go from start to lifting one hand
-        // std::vector<float> hand_up_positions = {187.0, 185.0, 143.0, 190.0};
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     increment_positions = set_positions;
-        //     move_servos(3, hand_up_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("Second go \n");
-        // }
-
         // // press to go to lifting the arm
-        std::vector<float> lift_arm_positions = {135.0, 185.0, 110.0, 190.0};
+        std::vector<float> lift_arm_positions = {135.0, 182.0, 110.0, 190.0};
         if (getch() == ENTER_ASCII_VALUE)
         {  
             increment_positions = set_positions;
@@ -249,8 +258,13 @@ int main()
             move_servos(3, lower_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             printf("ENTER PRESSED ho\n");
         }
+        // if (getch() == ENTER_ASCII_VALUE)
+        // {
+        //     move_servos(2, 182, increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        //     printf("ENTER PRESSED ho\n");
+        // }
         // press to go to a second set position (release second hand)
-        std::vector<float> second_set_positions = {158.0, 187.0, 120.0, 185.0};
+        std::vector<float> second_set_positions = {165.0, 187.0, 120.0, 185.0};
         if (getch() == ENTER_ASCII_VALUE)
         {   increment_positions = lower_arm_positions;
             move_servos(1, second_set_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
@@ -274,12 +288,12 @@ int main()
         if (getch() == ENTER_ASCII_VALUE)
         {   increment_positions = second_set_positions;
             move_servos(1, lift_second_arm_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("ENTER PRESSED SEVEN\n");
+            printf("ENTER PRESSED right\n");
         }
         if (getch() == ENTER_ASCII_VALUE)
         {
             move_servos(3, lift_second_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("ENTER PRESSED op\n");
+            printf("ENTER PRESSED here\n");
         }
         if (getch() == ENTER_ASCII_VALUE){
             move_servos(4, lift_second_arm_positions[3], increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
@@ -288,7 +302,7 @@ int main()
         // position arm
         if (getch() == ENTER_ASCII_VALUE)
         {
-            move_servos(3, lift_second_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            move_servos(3, 168, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             printf("ENTER PRESSED op\n");
         }
         std::vector<float> lower_second_arm_positions = {185.0, 187.0, 170.0, 175.0};
