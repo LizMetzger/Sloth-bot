@@ -25,8 +25,8 @@
 #define ADDE_PRESENT_CURRENT 126
 #define ADDER_ACCEL 108
 #define ADDER_VEL 112
-#define PROFILE_ACCEL 500
-#define PROFILE_VEL 1000
+#define PROFILE_ACCEL 15
+#define PROFILE_VEL 30
 
 #define PROTOCOL_VERSION 2.0
 
@@ -188,6 +188,7 @@ int main()
         {
             printf("Succeeded enabling DYNAMIXEL Torque for servo ID %d \n", i);
         }
+        // dxl_comm_result = packetHandlex
     }
 
     set_current_pose(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
@@ -205,7 +206,7 @@ int main()
         if (getch() == ENTER_ASCII_VALUE)
         {
         // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        for (int i = 1; i <= size(initial_positions); i ++){
+        for (int i = 1; i <= (int)size(initial_positions); i ++){
         wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
         move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
@@ -220,7 +221,7 @@ int main()
         move_servos(1, 224, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(2, 180, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // slightly raise the left hand off the bar
-        move_servos(3, 201, 218, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 200, 218, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // press the left hand in to lock the right one
         move_servos(2, 196, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         //////// raise the left hand /////////
@@ -249,169 +250,34 @@ int main()
         printf("no???");
         // move both shoulders down 
         move_servos(3, 138, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("fuck??");
-        move_servos(1, 161, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("here??");
+        move_servos(1, 164, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
         // push in with right arm
         move_servos(4, 179.5, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("push???");
         // move hand up 
-        move_servos(1, 180, 161, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 180, 164, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
-        }
-
         // move hand back 
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(4, 188, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("push???");
-        }
         // rotate hand 
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("fuck??");
-        }
+        printf("go??");
         // move arm all the way up
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(1, 245, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("???");
-        }
+        printf("?!");
         // rotate hand 
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(3, 213, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("fuck??");
-        }
+        printf("ah??");
         // move hand forward
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(4, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("fuck??");
-        }
+        printf("end??");
         // move hand down to bar
-        if (getch() == ENTER_ASCII_VALUE)
-        {
         move_servos(1, 235, 245, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("???");
+        printf("?!?!??");
         }
-        //     //    set the increment positions to be the start position of the servos
-        //     increment_positions = wake_up_poses;
-        //     // for each servo, if its current position is the goal (set_position) do nothing
-        //     // if the position isn't at the goal then increment itincrement_positions = set_positions;
-        //     move_servos(2, 186.5, increment_positions[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("first go \n");
-        //     if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(4, 178.2, increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("Second go \n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(3, 149.5, increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("third go \n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(1, set_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("fourth go \n");
-        // }
-        // // if (getch() == ENTER_ASCII_VALUE)
-        // // {
-        // //     move_servos(2, 180, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //     printf("fifth go \n");
-        // // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(3, 143, 149.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("sixth go \n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(2, 175, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("seventh go \n");
-        // }
-        //     printf("ENTER PRESSED ONCE\n");
-        //     // {184, 180, 143, 170}
-        // }
-
-        // // // press to go to lifting the arm
-        // std::vector<float> lift_arm_positions = {135.0, 182.0, 110.0, 190.0};
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {  
-        //     increment_positions = set_positions;
-        //     move_servos(3, lift_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED WHAT\n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(1, lift_arm_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED Four\n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE){
-        //     move_servos(2, lift_arm_positions[1], increment_positions[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED Five\n");
-        // }
-        // // // press to go to lower arm to bar
-        // std::vector<float> lower_arm_positions = {145.0, 185.0, 120.0, 190.0};
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {   increment_positions = lift_arm_positions;
-        //     move_servos(3, lower_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED ho\n");
-        // }
-        // // if (getch() == ENTER_ASCII_VALUE)
-        // // {
-        // //     move_servos(2, 182, increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //     printf("ENTER PRESSED ho\n");
-        // // }
-        // // press to go to a second set position (release second hand)
-        // std::vector<float> second_set_positions = {165.0, 187.0, 120.0, 185.0};
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {   increment_positions = lower_arm_positions;
-        //     move_servos(1, second_set_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED bar\n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE){
-        //     move_servos(4, second_set_positions[3], increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED nor\n");
-        // }
-        // // if (getch() == ENTER_ASCII_VALUE)
-        // // {
-        // //     move_servos(1, 155.0, 158.0, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //     printf("ENTER PRESSED bar\n");
-        // // }
-        // // if (getch() == ENTER_ASCII_VALUE){
-        // //     move_servos(4, second_set_positions[3], increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //     printf("ENTER PRESSED nor\n");
-        // // }
-        // // // press to go to lift the second arm
-        // std::vector<float> lift_second_arm_positions = {215.0, 187.0, 170.0, 175.0};
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {   increment_positions = second_set_positions;
-        //     move_servos(1, lift_second_arm_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED right\n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(3, lift_second_arm_positions[2], increment_positions[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED here\n");
-        // }
-        // if (getch() == ENTER_ASCII_VALUE){
-        //     move_servos(4, lift_second_arm_positions[3], increment_positions[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED eight\n");
-        // }
-        // // position arm
-        // if (getch() == ENTER_ASCII_VALUE)
-        // {
-        //     move_servos(3, 168, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED op\n");
-        // }
-        // std::vector<float> lower_second_arm_positions = {185.0, 187.0, 170.0, 175.0};
-        // if (getch() == ENTER_ASCII_VALUE) 
-        // {   increment_positions = lift_second_arm_positions;
-        //     move_servos(1, lower_second_arm_positions[0], increment_positions[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //     printf("ENTER PRESSED SEVEN\n");
         }
 
         if (getch() == ENTER_ASCII_VALUE)
