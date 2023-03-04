@@ -293,15 +293,57 @@ int main()
         }
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(1, 159.6, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 160.5, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
         }
-
         // push in with right arm
-
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(4, 179.5, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("push???");
+        }
         // move hand up 
-
-        
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(1, 180, 161, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("???");
+        }
+        // move hand back 
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(4, 188, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("push???");
+        }
+        // rotate hand 
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("fuck??");
+        }
+        // move arm all the way up
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(1, 245, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("???");
+        }
+        // rotate hand 
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(3, 213, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("fuck??");
+        }
+        // move hand forward
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(4, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("fuck??");
+        }
+        // move hand down to bar
+        if (getch() == ENTER_ASCII_VALUE)
+        {
+        move_servos(1, 235, 245, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("???");
+        }
         //     //    set the increment positions to be the start position of the servos
         //     increment_positions = wake_up_poses;
         //     // for each servo, if its current position is the goal (set_position) do nothing
