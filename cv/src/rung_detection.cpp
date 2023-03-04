@@ -3,7 +3,7 @@
 #include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
 #include <iostream>
-// using namespace cv;
+using namespace cv2;
 Mat src, src_gray;
 Mat dst, detected_edges;
 int lowThreshold = 0;

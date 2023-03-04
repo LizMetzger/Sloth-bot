@@ -51,6 +51,8 @@ std::vector<float> initial_positions(4);
 int dxl_id = 0;
 float goal_pose = 0.0;
 
+using namespace climbing; 
+
 // For non-blocking keyboard inputs
 int getch(void)
 {
@@ -78,58 +80,6 @@ int getch(void)
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
     return ch;
-}
-
-void set_current_pose(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
-{
-    // For each servo, add its current position to the servo pose
-    for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
-    {
-        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, i, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-        if (dxl_comm_result != COMM_SUCCESS)
-        {
-            printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
-        }
-        else if (dxl_error != 0)
-        {
-            printf("%s\n", packetHandler->getRxPacketError(dxl_error));
-        }
-        printf("[ID:%03d] Present Position:%03f\n", i, climbing::tics2deg(dxl_present_position));
-        initial_positions[i - 1] = climbing::tics2deg(dxl_present_position);
-    }
-}
-
-void move_servos(int dxl_id, double servo_poses, double increment_poses, int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
-{
-    // get the current position to start incrementing from it 
-    dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-    // set goal position to be where we are currently so it can be slowly incremented in the right direction
-    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-            do
-            {
-                // Read the Present Position
-                dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-                double diff = servo_poses - climbing::tics2deg(dxl_present_position);
-                // if the present position isn't the set position then increase the increment position
-                if (diff > 0)
-                {
-                    // add value to the increment
-                    increment_poses += .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                else if (diff < 0)
-                {
-                    // add value to the increment
-                    increment_poses -= .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                printf("Servo %d \n", dxl_id);
-                printf("present pose: %f", climbing::tics2deg(dxl_present_position));
-                printf("goal pose: %f", increment_poses);
-            } while ((abs(servo_poses - climbing::tics2deg(dxl_present_position)) > (DXL_MOVING_STATUS_THRESHOLD)));
-            printf("ENTER PRESSED Eight\n");
 }
 
 int main()
@@ -191,7 +141,7 @@ int main()
         // dxl_comm_result = packetHandlex
     }
 
-    set_current_pose(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+    initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
     std::vector<float> wake_up_poses(4);
 
 
@@ -201,6 +151,7 @@ int main()
     {
         printf("Press any key to continue. (Press [ESC] to exit)\n");
         // press once to move to the start position
+        // std::vector<float> set_positions = {184.0, 175.0, 143.0, 176.2};
         // THIS RUNS ONCE WHEN YOU WAKE UP THE ROBOT
         if (getch() == ENTER_ASCII_VALUE)
         {
