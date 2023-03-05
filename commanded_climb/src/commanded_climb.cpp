@@ -48,8 +48,18 @@ float position_increment = 1.0;
 std::vector<float> increment_positions(4);
 std::vector<float> initial_positions(4);
 
+char key(' ');
 int dxl_id = 0;
 float goal_pose = 0.0;
+
+// Map for movement keys
+std::map<char, std::vector<float>> moveBindings
+{
+  {'w', {1}},
+  {'s', {-1}},
+  {'i', {-1}},
+  {'k', {1}}
+};
 
 using namespace climbing; 
 
@@ -81,6 +91,7 @@ int getch(void)
 
     return ch;
 }
+
 
 int main()
 {
@@ -138,98 +149,29 @@ int main()
         {
             printf("Succeeded enabling DYNAMIXEL Torque for servo ID %d \n", i);
         }
-        // dxl_comm_result = packetHandlex
     }
-
-    initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
-    std::vector<float> wake_up_poses(4);
-
-
-
 
     while (true)
     {
-        printf("Press any key to continue. (Press [ESC] to exit)\n");
-        // press once to move to the start position
-        // std::vector<float> set_positions = {184.0, 175.0, 143.0, 176.2};
-        // THIS RUNS ONCE WHEN YOU WAKE UP THE ROBOT
-        if (getch() == ENTER_ASCII_VALUE)
+        printf("Waiting for key inputs... \n");
+        printf("Press (w) to move the right arm up and (i) to move the left arm up. \n");
+        printf("Press enter to break. \n");
+
+        key = getch();
+ 
+        // if the key press is w then climb up with the left arm
+        if (key == 0x77)
         {
-        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        for (int i = 1; i <= (int)size(initial_positions); i ++){
-        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
-        //!!//!!// LIFT THE LEFT HAND //!!///!!//
-        //////// release the left hand first //////////
-        // get the left hand loose
-        if (getch() == ENTER_ASCII_VALUE)
+        // if the key press is i then clumb up with the right arm
+        if (key == 0x69)
         {
-        move_servos(3, 218, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(4, 175, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 224, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 180, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // slightly raise the left hand off the bar
-        move_servos(3, 200, 218, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // press the left hand in to lock the right one
-        move_servos(2, 196, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //////// raise the left hand /////////
-        // lift the left arm with the right one until its clear
-        printf("HELLO???");
-        move_servos(3, 165, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // pull the left arm back
-        move_servos(2, 170, 198, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // rotate the left arm (partially)
-        move_servos(1, 150, 224, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // roatate the body out 
-        move_servos(4, 182, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // lift the left arm to the bar
-        move_servos(3, 110, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // finish rotating the arm
-        move_servos(1, 138, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //////// grab the next bar /////////
-        // move the hand forward
-        move_servos(2, 186, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move the left arm down with the right arm
-        move_servos(3, 130, 110, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("YO??");
-        ///////// lift the right arm //////////
-        // roll the right arm back 
-        move_servos(4, 185.6, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("no???");
-        // move both shoulders down 
-        move_servos(3, 138, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("here??");
-        move_servos(1, 164, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("???");
-        // push in with right arm
-        move_servos(4, 179.5, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("push???");
-        // move hand up 
-        move_servos(1, 180, 164, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("???");
-        // move hand back 
-        move_servos(4, 188, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("push???");
-        // rotate hand 
-        move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("go??");
-        // move arm all the way up
-        move_servos(1, 245, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("?!");
-        // rotate hand 
-        move_servos(3, 213, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("ah??");
-        // move hand forward
-        move_servos(4, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("end??");
-        // move hand down to bar
-        move_servos(1, 235, 245, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("?!?!??");
-        }
+        right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
+        // if the key press is enter then break
         if (getch() == ENTER_ASCII_VALUE)
         {
             break;
