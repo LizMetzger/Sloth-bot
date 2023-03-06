@@ -165,11 +165,24 @@ int main()
         left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
 
-        // if the key press is i then clumb up with the right arm
+        // if the key press is s then climb down with the left arm
+        if (key == 0x73)
+        {
+        left_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
+
+        // if the key press is i then climb up with the right arm
         if (key == 0x69)
         {
         right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
+
+        // if the key press is k then climb down with the right arm
+        if (key == 0x66)
+        {
+        right_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
+
 
         // if the key press is enter then break
         if (getch() == ENTER_ASCII_VALUE)

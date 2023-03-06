@@ -51,6 +51,8 @@ std::vector<float> initial_positions(4);
 int dxl_id = 0;
 float goal_pose = 0.0;
 
+using namespace climbing;
+
 // For non-blocking keyboard inputs
 int getch(void)
 {
@@ -78,58 +80,6 @@ int getch(void)
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 
     return ch;
-}
-
-void set_current_pose(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
-{
-    // For each servo, add its current position to the servo pose
-    for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
-    {
-        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, i, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-        if (dxl_comm_result != COMM_SUCCESS)
-        {
-            printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
-        }
-        else if (dxl_error != 0)
-        {
-            printf("%s\n", packetHandler->getRxPacketError(dxl_error));
-        }
-        printf("[ID:%03d] Present Position:%03f\n", i, climbing::tics2deg(dxl_present_position));
-        initial_positions[i - 1] = climbing::tics2deg(dxl_present_position);
-    }
-}
-
-void move_servos(int dxl_id, double servo_poses, double increment_poses, int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
-{
-    // get the current position to start incrementing from it 
-    dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-    // set goal position to be where we are currently so it can be slowly incremented in the right direction
-    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-            do
-            {
-                // Read the Present Position
-                dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-                double diff = servo_poses - climbing::tics2deg(dxl_present_position);
-                // if the present position isn't the set position then increase the increment position
-                if (diff > 0)
-                {
-                    // add value to the increment
-                    increment_poses += .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                else if (diff < 0)
-                {
-                    // add value to the increment
-                    increment_poses -= .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                printf("Servo %d \n", dxl_id);
-                printf("present pose: %f", climbing::tics2deg(dxl_present_position));
-                printf("goal pose: %f", increment_poses);
-            } while ((abs(servo_poses - climbing::tics2deg(dxl_present_position)) > (DXL_MOVING_STATUS_THRESHOLD)));
-            printf("ENTER PRESSED Eight\n");
 }
 
 int main()
@@ -191,93 +141,18 @@ int main()
         // dxl_comm_result = packetHandlex
     }
 
-    set_current_pose(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-    std::vector<float> wake_up_poses(4);
-
-
-
-
     while (true)
     {
         printf("Press any key to continue. (Press [ESC] to exit)\n");
-        // press once to move to the start position
-        // THIS RUNS ONCE WHEN YOU WAKE UP THE ROBOT
         if (getch() == ENTER_ASCII_VALUE)
         {
-        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        for (int i = 1; i <= (int)size(initial_positions); i ++){
-        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        }
-
-        //!!//!!// LIFT THE LEFT HAND //!!///!!//
-        //////// release the left hand first //////////
         // get the left hand loose
         if (getch() == ENTER_ASCII_VALUE)
         {
-        ////// MOVE LEFT ARM DOWN ///////
-        move_servos(3, 131, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(4, 178, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 141, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // secure the right hand 
-        move_servos(4, 170, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // slightly release the left hand
-        move_servos(3, 118, 131, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // wiggle the servos to let go
-        move_servos(1, 130, 141, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(3, 115, 118, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 180, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 127, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(3, 108, 115, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // pull the left hand out of the ladder 
-        move_servos(2, 165, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // rotate the body (for safety)
-        move_servos(4, 182, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // rotate the arm around
-        move_servos(1, 210, 127, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // drop the left arm down
-        move_servos(3, 190, 106, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move left arm in
-        move_servos(2, 183, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // drop the left down to bar
-        move_servos(3, 210, 190, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // spin arm all the way arond
-        move_servos(1, 217, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // slightly raise the left hand off the bar
-
-        set_current_pose(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        for (int i = 1; i <= (int)size(initial_positions); i ++){
-        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        }
-        ////// MOVE RIGHT ARM DOWN ///////
-        move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(4, 181, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 217, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // lift right arm a little
-        move_servos(1, 239, 217, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // wiggle!
-        move_servos(3, 220, 211, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 245, 239, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(3, 226, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(1, 248, 241, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move the arm out of the ladder
-        move_servos(4, 202, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move body out
-        move_servos(2, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //move arm over
-        move_servos(3, 145, 226, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move the arm down 
-        move_servos(1, 175, 252, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move arm in 
-        move_servos(4, 181, 202, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // drop arm to the bar
-        move_servos(1, 145, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // fit hand onto bar
-        move_servos(3, 140, 145, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the left hand down the ladder
+        left_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the right hand down the ladder
+        right_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         }
 

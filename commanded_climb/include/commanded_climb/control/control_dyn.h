@@ -251,6 +251,103 @@ namespace climbing
             enable_torque(i ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
         }
     }
+
+    void right_down(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
+        std::vector<float> initial_positions(4);
+        initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
+        std::vector<float> wake_up_poses(4);
+        for (int i = 1; i <= (int)size(initial_positions); i ++){
+        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
+        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
+        ////// MOVE RIGHT ARM DOWN ///////
+        move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 181, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 217, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // lift right arm a little
+        move_servos(1, 239, 217, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wiggle!
+        move_servos(3, 220, 211, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 245, 239, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 226, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move_servos(1, 248, 241, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the arm out of the ladder
+        move_servos(4, 202, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move body out
+        move_servos(2, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        //move arm over
+        move_servos(3, 145, 226, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the arm down 
+        move_servos(1, 175, 252, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move arm in 
+        move_servos(4, 181, 202, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // drop arm to the bar
+        move_servos(1, 145, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // fit hand onto bar
+        move_servos(3, 140, 145, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // Disable DYNAMIXEL Torque
+        for (int j = 1; j <= NUMB_OF_DYNAMIXELS; j++)
+        {
+            disable_torque(j ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
+        }
+        // Enable DYNAMIXEL Torque
+        for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
+        {
+            enable_torque(i ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
+        }
+    }
+
+    void left_down(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
+        std::vector<float> initial_positions(4);
+        initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
+        std::vector<float> wake_up_poses(4);
+        for (int i = 1; i <= (int)size(initial_positions); i ++){
+        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
+        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
+        ////// MOVE LEFT ARM DOWN ///////
+        move_servos(3, 131, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 178, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 141, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // secure the right hand 
+        move_servos(4, 170, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // slightly release the left hand
+        move_servos(3, 118, 131, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wiggle the servos to let go
+        move_servos(1, 130, 141, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 115, 118, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 180, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 127, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 108, 115, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // pull the left hand out of the ladder 
+        move_servos(2, 165, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // rotate the body (for safety)
+        move_servos(4, 182, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // rotate the arm around
+        move_servos(1, 210, 127, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // drop the left arm down
+        move_servos(3, 190, 106, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move left arm in
+        move_servos(2, 183, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // drop the left down to bar
+        move_servos(3, 210, 190, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // spin arm all the way arond
+        move_servos(1, 217, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // Disable DYNAMIXEL Torque
+        for (int j = 1; j <= NUMB_OF_DYNAMIXELS; j++)
+        {
+            disable_torque(j ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
+        }
+        // Enable DYNAMIXEL Torque
+        for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
+        {
+            enable_torque(i ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
+        }
+    }
 }
 
 #endif
