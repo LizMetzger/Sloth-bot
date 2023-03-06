@@ -10,7 +10,7 @@ one_arm_climb:
 Runs a script that autonomously has the robot climb up two rungs. This script uses a gait where there is only ever one arm per rung. Upon starting the script press any buttton then ENTER to create a homing position then ENTER again to have the robot climb. 
 
 climb_down:
-
+Uses the one armed climbing gait to climb down the ladder autonomously.
 
 commanded_climb:
 A combination of teleop and autonomous climb. Takes keyboard presses to trigger autonomous climb motions for the right arm and left arm going up. Press w to move the left arm up a rung and i to move the right arm up a rung. 

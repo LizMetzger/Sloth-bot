@@ -23,7 +23,7 @@
 #---------------------------------------------------------------------
 
 # *** ENTER THE TARGET NAME HERE ***
-TARGET      = one_arm_climb
+TARGET      = climb_down
 
 # important directories used by assorted rules and other variables
 DIR_DXL    = ../../../..
@@ -41,14 +41,14 @@ FORMAT      = -m64
 #---------------------------------------------------------------------
 # Core components (all of these are likely going to be needed)
 #---------------------------------------------------------------------
-INCLUDES   += -I$(DIR_DXL)/include/one_arm_climb
-INCLUDES   += -I /home/liz/winter_project/Sloth-bot/one_arm_climb/include/one_arm
+INCLUDES   += -I$(DIR_DXL)/include/climb_down
+INCLUDES   += -I /home/liz/winter_project/Sloth-bot/climb_down/include/climb_down
 LIBRARIES  += -ldxl_x64_cpp
 LIBRARIES  += -lrt
 #---------------------------------------------------------------------
 # Files
 #---------------------------------------------------------------------
-SOURCES = one_arm_climb.cpp \
+SOURCES = climb_down.cpp \
     # *** OTHER SOURCES GO HERE ***
 
 
