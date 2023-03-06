@@ -265,7 +265,7 @@ int main()
         move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("go??");
         // move arm all the way up
-        move_servos(1, 245, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 255, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("?!");
         // rotate hand 
         move_servos(3, 213, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
@@ -274,7 +274,7 @@ int main()
         move_servos(4, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("end??");
         // move hand down to bar
-        move_servos(1, 233, 245, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 233, 255, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("?!?!??");
         }
         }

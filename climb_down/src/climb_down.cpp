@@ -215,83 +215,69 @@ int main()
         // get the left hand loose
         if (getch() == ENTER_ASCII_VALUE)
         {
-        move_servos(3, 143, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(4, 183, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 149, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(2, 177, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        ////// MOVE LEFT ARM DOWN ///////
+        move_servos(3, 131, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 178, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 141, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // secure the right hand 
-        move_servos(4, 180, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 170, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // slightly release the left hand
-        move_servos(3, 127, 143, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // adjust the right hand to release the left
-        move_servos(4, 188, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // pull the left arm back a little (for clearance)
-        move_servos(2, 174, 177, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // lift the right hand
-        move_servos(3, 118, 127, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 118, 131, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wiggle the servos to let go
+        move_servos(1, 130, 141, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 115, 118, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 180, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 127, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 108, 115, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // pull the left hand out of the ladder 
-        move_servos(2, 160, 174, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 165, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // rotate the body (for safety)
+        move_servos(4, 182, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // rotate the arm around
-        move_servos(1, 210, 149, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 210, 127, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // drop the left arm down
-        move_servos(3, 190, 118, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // slightly raise the left hand off the bar
-        // move_servos(3, 200, 218, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // press the left hand in to lock the right one
-        // move_servos(2, 196, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //////// raise the left hand /////////
-        // // lift the left arm with the right one until its clear
-        // printf("HELLO???");
-        // move_servos(3, 165, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // pull the left arm back
-        // move_servos(2, 170, 198, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // rotate the left arm (partially)
-        // move_servos(1, 150, 224, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // roatate the body out 
-        // move_servos(4, 182, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // lift the left arm to the bar
-        // move_servos(3, 110, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // finish rotating the arm
-        // move_servos(1, 138, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // //////// grab the next bar /////////
-        // // move the hand forward
-        // move_servos(2, 186, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // move the left arm down with the right arm
-        // move_servos(3, 130, 110, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("YO??");
-        // ///////// lift the right arm //////////
-        // // roll the right arm back 
-        // move_servos(4, 185.6, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("no???");
-        // // move both shoulders down 
-        // move_servos(3, 138, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("here??");
-        // move_servos(1, 164, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("???");
-        // // push in with right arm
-        // move_servos(4, 179.5, 185.6, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("push???");
-        // // move hand up 
-        // move_servos(1, 180, 164, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("???");
-        // // move hand back 
-        // move_servos(4, 188, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("push???");
-        // // rotate hand 
-        // move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("go??");
-        // // move arm all the way up
-        // move_servos(1, 245, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("?!");
-        // // rotate hand 
-        // move_servos(3, 213, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("ah??");
-        // // move hand forward
-        // move_servos(4, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("end??");
-        // // move hand down to bar
-        // move_servos(1, 233, 245, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("?!?!??");
+        move_servos(3, 190, 106, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move left arm in
+        move_servos(2, 183, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // drop the left down to bar
+        move_servos(3, 210, 190, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // spin arm all the way arond
+        move_servos(1, 217, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // slightly raise the left hand off the bar
+
+        set_current_pose(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
+        for (int i = 1; i <= (int)size(initial_positions); i ++){
+        wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
+        move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        }
+        ////// MOVE RIGHT ARM DOWN ///////
+        move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 181, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 217, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // lift right arm a little
+        move_servos(1, 239, 217, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // wiggle!
+        move_servos(3, 220, 211, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 245, 239, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 226, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move_servos(1, 248, 241, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the arm out of the ladder
+        move_servos(4, 202, 181, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move body out
+        move_servos(2, 178, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        //move arm over
+        move_servos(3, 145, 226, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move the arm down 
+        move_servos(1, 175, 252, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move arm in 
+        move_servos(4, 181, 202, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // drop arm to the bar
+        move_servos(1, 145, 175, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // fit hand onto bar
+        move_servos(3, 140, 145, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
         }
 
