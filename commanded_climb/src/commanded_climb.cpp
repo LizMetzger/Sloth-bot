@@ -178,7 +178,7 @@ int main()
         }
 
         // if the key press is k then climb down with the right arm
-        if (key == 0x66)
+        if (key == 0x6b)
         {
         right_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         }
