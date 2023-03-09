@@ -217,7 +217,7 @@ namespace climbing
         move_servos(2, 184, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("AGH???");
         // pull arm up a little
-        move_servos(1, 144, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 142, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
         move_servos(4, 184, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("no???");
