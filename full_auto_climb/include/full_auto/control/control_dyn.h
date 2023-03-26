@@ -214,15 +214,15 @@ namespace climbing
         // move both shoulders down 
         move_servos(3, 138, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("here??");
-        move_servos(2, 184, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 185, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("AGH???");
         // pull arm up a little
-        move_servos(1, 142, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 140, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
         move_servos(4, 184, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("no???");
         // release
-        move_servos(1, 165, 142, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 164, 140, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("???");
         // push in with right arm
         move_servos(4, 180, 184, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);

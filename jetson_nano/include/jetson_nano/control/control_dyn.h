@@ -41,35 +41,43 @@ namespace climbing
     /// @param dxl_error - the error of the servo
     void move_servos(int dxl_id, double servo_poses, double increment_poses, int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
     {
-    // get the current position to start incrementing from it 
-    dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
+    printf("Move");
     // set goal position to be where we are currently so it can be slowly incremented in the right direction
-    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-            do
-            {
-                // Read the Present Position
-                dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-                double diff = servo_poses - climbing::tics2deg(dxl_present_position);
-                // if the present position isn't the set position then increase the increment position
-                if (diff > 0)
-                {
-                    // add value to the increment
-                    increment_poses += .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                else if (diff < 0)
-                {
-                    // add value to the increment
-                    increment_poses -= .15;
-                    // rewrite goal position
-                    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
-                }
-                printf("Servo %d \n", dxl_id);
-                printf("present pose: %f", climbing::tics2deg(dxl_present_position));
-                printf("goal pose: %f", increment_poses);
-            } while ((abs(servo_poses - climbing::tics2deg(dxl_present_position)) > (DXL_MOVING_STATUS_THRESHOLD)));
-            printf("Move done!\n");
+    dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(servo_poses), &dxl_error);
+    do
+    {
+        // Read the Present Position
+        dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
+    } while ((abs(servo_poses - climbing::tics2deg(dxl_present_position)) > (DXL_MOVING_STATUS_THRESHOLD)));
+    // get the current position to start incrementing from it 
+    // dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
+    // // set goal position to be where we are currently so it can be slowly incremented in the right direction
+    // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(servo_poses), &dxl_error);
+    // do
+    // {
+    //     // Read the Present Position
+    //     dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, dxl_id, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
+    //     // double diff = servo_poses - climbing::tics2deg(dxl_present_position);
+    //     // // if the present position isn't the set position then increase the increment position
+    //     // if (diff > 0)
+    //     // {
+    //     //     // add value to the increment
+    //     //     increment_poses += .15;
+    //     //     // rewrite goal position
+    //     //     dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
+    //     // }
+    //     // else if (diff < 0)
+    //     // {
+    //     //     // add value to the increment
+    //     //     increment_poses -= .15;
+    //     //     // rewrite goal position
+    //     //     dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, dxl_id, ADDR_GOAL_POSITION, climbing::deg2tics(increment_poses), &dxl_error);
+    //     // }
+    //     // printf("Servo %d \n", dxl_id);
+    //     // printf("present pose: %f", climbing::tics2deg(dxl_present_position));
+    //     // printf("goal pose: %f", increment_poses);
+    // } while ((abs(servo_poses - climbing::tics2deg(dxl_present_position)) > (DXL_MOVING_STATUS_THRESHOLD)));
+    printf("Move done!\n");
     }
 
     std::vector<float> set_current_pose(int dxl_comm_result, std::vector<float> initial_positions, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error)
@@ -88,7 +96,9 @@ namespace climbing
         }
         printf("[ID:%03d] Present Position:%03f\n", i, climbing::tics2deg(dxl_present_position));
         initial_positions[i - 1] = climbing::tics2deg(dxl_present_position);
+        printf("you");
     }
+    printf("swedrfgyh");
     return initial_positions;
     }
 
@@ -199,15 +209,20 @@ namespace climbing
     /// @param dxl_present_position - the current position of the servo
     /// @param dxl_error - the dxl error
     void right_climb(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
+        printf("climb");
         std::vector<float> initial_positions(4);
+        printf("check 1");
         initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("check 2");
         std::vector<float> wake_up_poses(4);
         // get all the servos to a close enough position
-        for (int i = 1; i <= (int)size(initial_positions); i ++){
-            wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-            move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        }
+        // for (int i = 1; i <= (int)size(initial_positions); i ++){
+        //     wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
+        //     // move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        //     printf("HERE???");
+        // }
         /////// lift the right arm //////////
+        printf("here???");
         // roll the right arm back 
         move_servos(4, 186, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("no???");
