@@ -25,8 +25,14 @@
 #define ADDE_PRESENT_CURRENT 126
 #define ADDER_ACCEL 108
 #define ADDER_VEL 112
-#define PROFILE_ACCEL 15
-#define PROFILE_VEL 30
+#define PROFILE_ACCEL 10
+#define PROFILE_VEL 15
+#define ADDER_P 80
+#define ADDER_I 82
+#define ADDER_D 84
+#define P_VAL 1600
+#define I_VAL 50
+#define D_VAL 100
 
 #define PROTOCOL_VERSION 2.0
 
@@ -34,7 +40,7 @@
 
 #define TORQUE_ENABLE 1
 #define TORQUE_DISABLE 0
-#define DXL_MOVING_STATUS_THRESHOLD .15 // DYNAMIXEL moving status threshold
+#define DXL_MOVING_STATUS_THRESHOLD .1 // DYNAMIXEL moving status threshold
 #define ENTER_ASCII_VALUE 0x0d
 #define ADDR_MAX_VELOCITY 44
 
@@ -119,12 +125,21 @@ int main()
         return 0;
     }
 
-    // Enable DYNAMIXEL Torque
+    
     for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
     {
+        // Enable DYNAMIXEL Torque
         dxl_comm_result = packetHandler->write1ByteTxRx(portHandler, i, ADDR_TORQUE_ENABLE, TORQUE_ENABLE, &dxl_error);
+        // Set Profile Velcotiy
         dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_VEL, PROFILE_VEL, &dxl_error);
+        // Set Profile Acceleration
         dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_ACCEL, PROFILE_ACCEL, &dxl_error);
+        // Set P Value
+        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_P, P_VAL, &dxl_error);
+        // Set I Value
+        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_I, I_VAL, &dxl_error);
+        // Set D Value
+        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_D, D_VAL, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS)
         {
             printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
@@ -146,11 +161,7 @@ int main()
         if (getch() == ENTER_ASCII_VALUE)
         {
             printf("One");
-            dxl_comm_result = packetHandler->read4ByteTxRx(portHandler, 4, ADDR_PRESENT_POSITION, (uint32_t *)&dxl_present_position, &dxl_error);
-            printf("Two");
-            move_servos(4, 178, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            printf("Three");
-            // right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // printf("Two");
             // left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // printf("One");
