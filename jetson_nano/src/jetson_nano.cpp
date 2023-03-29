@@ -134,12 +134,6 @@ int main()
         dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_VEL, PROFILE_VEL, &dxl_error);
         // Set Profile Acceleration
         dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_ACCEL, PROFILE_ACCEL, &dxl_error);
-        // Set P Value
-        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_P, P_VAL, &dxl_error);
-        // // Set I Value
-        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_I, I_VAL, &dxl_error);
-        // // Set D Value
-        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_D, D_VAL, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS)
         {
             printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
@@ -161,9 +155,9 @@ int main()
         if (getch() == ENTER_ASCII_VALUE)
         {
             printf("One");
-            right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            // right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // printf("Two");
-            // left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // printf("One");
             // right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);

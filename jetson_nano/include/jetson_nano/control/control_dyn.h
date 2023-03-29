@@ -151,28 +151,16 @@ namespace climbing
     /// @param dxl_present_position - the current position of the servo
     /// @param dxl_error - the dxl error
     void left_climb(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
-        // std::vector<float> initial_positions(4); 
-        // initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // std::vector<float> wake_up_poses(4);
-        // // get all the servos to a close enough position
-        // for (int i = 1; i <= (int)size(initial_positions); i ++){
-        //     wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        //     move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // }
-        // move_servos(3, 218, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(4, 178, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(1, 224, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(2, 180, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // get to an initial position
+        move_servos(2, 179, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 176, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 235, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // slightly raise the left hand off the bar
-        move_servos(3, 200, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // press the left hand in to lock the right one
-        move_servos(2, 196, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        //////// raise the left hand /////////
-        // lift the left arm with the right one until its clear
-        printf("HELLO???");
-        move_servos(3, 165, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move_servos(2, 168, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 203, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // pull the left arm back
-        move_servos(2, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 168, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // rotate the left arm (partially)
         move_servos(1, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // roatate the body out 
@@ -180,13 +168,12 @@ namespace climbing
         // lift the left arm to the bar
         move_servos(3, 110, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // finish rotating the arm
-        move_servos(1, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 144, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         //////// grab the next bar /////////
         // move the hand forward
         move_servos(2, 186, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // move the left arm down with the right arm
         move_servos(3, 130, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("YO??");
         // Disable DYNAMIXEL Torque
         for (int j = 1; j <= NUMB_OF_DYNAMIXELS; j++)
         {
