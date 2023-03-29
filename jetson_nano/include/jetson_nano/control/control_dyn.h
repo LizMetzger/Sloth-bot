@@ -208,53 +208,28 @@ namespace climbing
     void right_climb(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
         /////// lift the right arm //////////
         printf("one");
+        move_servos(1, 158, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 133, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // roll the right arm back 
-        move_servos(4, 186, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         printf("two");
-        // move both shoulders down 
-        move_servos(3, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("three");
-        move_servos(2, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("four");
+        // push in with right arm
+        move_servos(4, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // pull arm up a little
-        move_servos(1, 140, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("five");
-        move_servos(4, 184, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("six");
-        // release
-        move_servos(1, 164, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("seven");
-        // // push in with right arm
-        // move_servos(4, 180, 184, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("eight");
-        // // move body out
-        // move_servos(2, 182, 195, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("nine");
-        // // move hand up 
-        // move_servos(1, 180, 164, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("ten");
-        // // move hand back move_servos(2, 195, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("eleven");
-        // move_servos(4, 193, 179.5, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("twelve");
-        // // rotate hand 
-        // move_servos(3, 185, 138, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("thirteen");
-        // // move arm all the way up
-        // move_servos(1, 248, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("fourteen");
-        // // move the body out
-        // // move_servos(2, 182, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // printf("?!");
-        // // rotate hand 
-        // move_servos(3, 220, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("fifteen");
-        // // move hand forward
-        // move_servos(4, 179, 193, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("sixteen");
-        // // move hand down to bar
-        // move_servos(1, 225, 249, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // printf("seventeen");
+        move_servos(1, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move body out
+        move_servos(2, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        printf("nine");
+        // move hand back 
+        move_servos(4, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // rotate hand 
+        move_servos(3, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move arm all the way up
+        move_servos(1, 248, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move hand forward
+        move_servos(4, 179, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // move hand down to bar
+        move_servos(1, 225, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // Disable DYNAMIXEL Torque
         for (int j = 1; j <= NUMB_OF_DYNAMIXELS; j++)
         {

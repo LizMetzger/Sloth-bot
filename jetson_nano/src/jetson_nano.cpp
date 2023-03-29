@@ -135,11 +135,11 @@ int main()
         // Set Profile Acceleration
         dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_ACCEL, PROFILE_ACCEL, &dxl_error);
         // Set P Value
-        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_P, P_VAL, &dxl_error);
-        // Set I Value
-        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_I, I_VAL, &dxl_error);
-        // Set D Value
-        dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_D, D_VAL, &dxl_error);
+        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_P, P_VAL, &dxl_error);
+        // // Set I Value
+        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_I, I_VAL, &dxl_error);
+        // // Set D Value
+        // dxl_comm_result = packetHandler->write4ByteTxRx(portHandler, i, ADDER_D, D_VAL, &dxl_error);
         if (dxl_comm_result != COMM_SUCCESS)
         {
             printf("%s\n", packetHandler->getTxRxResult(dxl_comm_result));
