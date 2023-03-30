@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <iostream>
+// # include <unistd.h>
 #include "dynamixel_sdk/dynamixel_sdk.h"
 #include "dynamixel_sdk/port_handler.h"
 #include "dynamixel_sdk/port_handler_linux.h"
@@ -151,16 +152,22 @@ namespace climbing
     /// @param dxl_present_position - the current position of the servo
     /// @param dxl_error - the dxl error
     void left_climb(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
-        // get to an initial position
+        // set postion
+        move_servos(1, 225, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 176, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 212, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 183, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // start move
         move_servos(2, 179, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(4, 176, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(3, 220, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        move_servos(1, 235, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(1, 230, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // slightly raise the left hand off the bar
-        // move_servos(2, 168, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(3, 203, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // pull the left arm back
+        // pull left arm back
         move_servos(2, 168, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // lower arm to grab
+        move_servos(3, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // rotate the left arm (partially)
         move_servos(1, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // roatate the body out 
@@ -179,6 +186,7 @@ namespace climbing
         {
             disable_torque(j ,dxl_comm_result, packetHandler, portHandler,  dxl_error);
         }
+        // sleep(.2);
         // Enable DYNAMIXEL Torque
         for (int i = 1; i <= NUMB_OF_DYNAMIXELS; i++)
         {
@@ -193,20 +201,23 @@ namespace climbing
     /// @param dxl_present_position - the current position of the servo
     /// @param dxl_error - the dxl error
     void right_climb(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
-        /////// lift the right arm //////////
-        printf("one");
-        move_servos(1, 158, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // set postion
+        move_servos(1, 145, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(2, 186, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(3, 133, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        move_servos(4, 177, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+        // start move
+        move_servos(1, 155, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(3, 133, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // roll the right arm back 
-        move_servos(4, 185, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("two");
+        move_servos(4, 188, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // push in with right arm
+        // move_servos(1, 150, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         move_servos(4, 178, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // pull arm up a little
         move_servos(1, 180, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // move body out
         move_servos(2, 182, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        printf("nine");
         // move hand back 
         move_servos(4, 210, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // rotate hand 
@@ -230,19 +241,6 @@ namespace climbing
     }
 
     void right_down(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
-        // std::vector<float> initial_positions(4);
-        // initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        // std::vector<float> wake_up_poses(4);
-        // for (int i = 1; i <= (int)size(initial_positions); i ++){
-        // wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        // move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // }
-        // ////// MOVE RIGHT ARM DOWN ///////
-        // move_servos(3, 211, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(4, 181, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(1, 217, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // lift right arm a little
         move_servos(1, 239, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // wiggle!
@@ -277,19 +275,6 @@ namespace climbing
     }
 
     void left_down(int dxl_comm_result, dynamixel::PacketHandler *&packetHandler, dynamixel::PortHandler *&portHandler, uint32_t dxl_present_position, uint8_t &dxl_error){
-        // std::vector<float> initial_positions(4);
-        // initial_positions = set_current_pose(dxl_comm_result, initial_positions, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // // wake up poses move each servo a little before moving to their set positions to get rid of jumpiness
-        // std::vector<float> wake_up_poses(4);
-        // for (int i = 1; i <= (int)size(initial_positions); i ++){
-        // wake_up_poses.at(i - 1) = initial_positions.at(i - 1) + .15;
-        // move_servos(i, wake_up_poses.at(i - 1), initial_positions.at(i - 1), dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // }
-        // ////// MOVE LEFT ARM DOWN ///////
-        // move_servos(3, 131, wake_up_poses[2], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(4, 178, wake_up_poses[3], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(1, 141, wake_up_poses[0], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-        // move_servos(2, 183, wake_up_poses[1], dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // secure the right hand 
         move_servos(4, 170, dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
         // slightly release the left hand

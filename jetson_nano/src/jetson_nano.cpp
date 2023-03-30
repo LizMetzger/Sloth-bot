@@ -154,13 +154,11 @@ int main()
 
         if (getch() == ENTER_ASCII_VALUE)
         {
-            printf("One");
-            // right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            // printf("Two");
+            printf("HI");
+            right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            // printf("One");
-            // right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
-            // left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            right_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
+            left_climb(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // left_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // right_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
             // left_down(dxl_comm_result, packetHandler, portHandler, dxl_present_position, dxl_error);
